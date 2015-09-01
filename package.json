@@ -1,0 +1,20 @@
+{
+  "name": "dharma",
+  "version": "0.0.1",
+  "description": "Node Test Runner",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf build && rm -rf dist",
+    "tsc": "tsc",
+    "build": "npm run clean && npm run tsc"
+  },
+  "author": "Mike Donovan",
+  "license": "MIT",
+  "bin": {
+    "dharma": "./bin/dharma"
+  },
+  "dependencies": {
+    "jasmine": "^2.3.2",
+    "minimist": "^1.2.0"
+  }
+}
