@@ -10,6 +10,15 @@
     },
     "jasmine/jasmine.d.ts": {
       "commit": "a278148f0ec80f2aa9a2ec22f5089308f74dda47"
+    },
+    "node/node.d.ts": {
+      "commit": "af76bf46025371c760d8fe8c03cf874428da6124"
+    },
+    "glob/glob.d.ts": {
+      "commit": "af76bf46025371c760d8fe8c03cf874428da6124"
+    },
+    "minimatch/minimatch.d.ts": {
+      "commit": "af76bf46025371c760d8fe8c03cf874428da6124"
     }
   }
 }

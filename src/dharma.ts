@@ -1,31 +1,30 @@
 declare var require:any;
 
-import {TestRunner} from "frameworks/TestRunner";
+import {JasmineRunner} from "./frameworks/JasmineRunner"; 
+import {IstanbulPreprocessor} from "./preprocessors/IstanbulPreprocessor";
 
 export interface Config {
-	specs: string[];
+	specs?: string[];
 	helpers?: string[];
 	specDir?: string;
+	srcFiles?: string[];
+	outputDir?: string;
 }
 
 export class Dharma {
 	
-	constructor(private framework: string, private preprocessors: string[], private reporters: string[]){
+	constructor(private config: Config){
 		
 	}	
 	
 	public runPreprocessors(){
-		
+		var preprocessor = new IstanbulPreprocessor();
+		preprocessor.preprocess(this.config);
 	}
 	
 	public runTests(){		 
-		//TODO how to dynamically import modules with typescript
-		var testRunner = require(this.framework);		
-		console.log(testRunner);
-		var runner = new testRunner.default(); 
-		runner.runTests({
-			specs: ["spec.js"]			
-		});
+		var runner = new JasmineRunner(); 
+		runner.runTests(this.config);
 	}
 	
 	public runReporters(){
