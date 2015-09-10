@@ -1,7 +1,10 @@
 declare var require:any;
 
+import * as Bluebird from "bluebird";
 import {JasmineRunner} from "./frameworks/JasmineRunner"; 
 import {IstanbulPreprocessor} from "./preprocessors/IstanbulPreprocessor";
+import {IstanbulReporter} from "./reporters/IstanbulReporter";
+import {IstanbulThresholdReporter} from "./reporters/IstanbulThresholdReporter";
 
 export interface Config {
 	specs?: string[];
@@ -17,17 +20,31 @@ export class Dharma {
 		
 	}	
 	
-	public runPreprocessors(){
+	public run(){
+		this.runPreprocessors()
+		.then(()=>{
+			this.runTests();
+		})
+		.then(()=>{
+			this.runReporters().catch((err) => {
+				throw "fail";
+			});
+		});
+	}
+	
+	private runPreprocessors(): Promise<any>{
 		var preprocessor = new IstanbulPreprocessor();
-		preprocessor.preprocess(this.config);
+		return preprocessor.preprocess(this.config);		
 	}
 	
-	public runTests(){		 
+	private runTests(): Promise<any>{		 
 		var runner = new JasmineRunner(); 
-		runner.runTests(this.config);
+		return runner.runTests(this.config);		
 	}
 	
-	public runReporters(){
-		
+	private runReporters(): Promise<any>{
+		var istanbulReporter = new IstanbulReporter();
+		var thresholdReporter = new IstanbulThresholdReporter();
+		return istanbulReporter.report(this.config).then(() => {return thresholdReporter.report(this.config)});		
 	}
 }

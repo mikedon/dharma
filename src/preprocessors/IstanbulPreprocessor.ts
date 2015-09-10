@@ -1,35 +1,21 @@
 declare var require: any;
 
-import * as fs from "fs";
-import * as glob from "glob";
+import * as Bluebird from "bluebird";
 import {Config} from "../dharma";
 
+// import * as istanbul from "istanbul";
 var Istanbul: any = require("istanbul");
 
 export class IstanbulPreprocessor {
 	
-	public preprocess(config: Config){
-		//TODO I think we need to move everything to a staging directory, specs and instrumented code
-				
-		var filesToIgnore: string[] = [];
-		var instrumenter = new Istanbul.Instrumenter();
-		config.specs.forEach((specFile: string) => {
-			glob(specFile, (err: Error, matches: string[])=> {
-				filesToIgnore = filesToIgnore.concat(matches);
-			});
-		});		
-		config.srcFiles.forEach((srcFile: string)=>{
-			glob(srcFile, (err: Error, matches: string[])=> {
-				matches.forEach((file: string) => {
-					if(filesToIgnore.indexOf(file) < 0){
-						fs.readFile(file, (err: NodeJS.ErrnoException, data: Buffer) => {
-							var generatedCode = instrumenter.instrumentSync(data.toString(), file);
-							fs.writeFile(`${config.outputDir}`, generatedCode);
-							console.log(generatedCode);				
-						});
-					}
-				})						
-			});
-		});						
+	public preprocess(config: Config): Promise<any>{
+		console.log("running preprocessor...");
+		var hook = Istanbul.hook;     		
+		var instrumenter = new Istanbul.Instrumenter({ /*coverageVariable: coverageVar , preserveComments: preserveComments*/});
+        var transformer = instrumenter.instrumentSync.bind(instrumenter);
+		var matcherFor:Function = Bluebird.promisify(Istanbul.matcherFor);
+		return matcherFor({excludes: ["*.spec.js"]}).then((matchFn: Function) => {			
+			hook.hookRequire(matchFn, transformer, {verbose: true});
+		});								
 	}		
 }

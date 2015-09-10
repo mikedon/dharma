@@ -17,10 +17,8 @@ export function run(){
 	
 	var dharma = new Dharma(config);
 	switch(cmd){
-		case "test":
-			dharma.runPreprocessors();								
-			dharma.runTests();
-			dharma.runReporters();
+		case "run":
+			dharma.run();			
 			break;		
 		case "help":
 			console.log("HELP ME");
