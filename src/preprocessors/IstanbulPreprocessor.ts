@@ -14,7 +14,7 @@ export class IstanbulPreprocessor {
 		var instrumenter = new Istanbul.Instrumenter({ /*coverageVariable: coverageVar , preserveComments: preserveComments*/});
         var transformer = instrumenter.instrumentSync.bind(instrumenter);
 		var matcherFor:Function = Bluebird.promisify(Istanbul.matcherFor);
-		return matcherFor({excludes: ["*.spec.js"]}).then((matchFn: Function) => {			
+		return matcherFor({excludes: config.specs}).then((matchFn: Function) => {			
 			hook.hookRequire(matchFn, transformer, {verbose: true});
 		});								
 	}		

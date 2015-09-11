@@ -1,17 +1,21 @@
-declare var require:any;
-
 import * as Bluebird from "bluebird";
 import {JasmineRunner} from "./frameworks/JasmineRunner"; 
 import {IstanbulPreprocessor} from "./preprocessors/IstanbulPreprocessor";
 import {IstanbulReporter} from "./reporters/IstanbulReporter";
 import {IstanbulThresholdReporter} from "./reporters/IstanbulThresholdReporter";
 
-export interface Config {
-	specs?: string[];
-	helpers?: string[];
-	specDir?: string;
-	srcFiles?: string[];
-	outputDir?: string;
+export class Config {
+	specs: string[];
+	helpers: string[];
+	specDir: string;
+	srcFiles: string[];	
+	
+	constructor({specs = ["**/*.spec.js"], helpers = [], specDir = ".", srcFiles = []}){
+		this.specs = specs;
+		this.helpers = helpers;
+		this.specDir = specDir;
+		this.srcFiles = srcFiles;
+	}	
 }
 
 export class Dharma {

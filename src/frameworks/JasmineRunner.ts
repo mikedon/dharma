@@ -18,7 +18,7 @@ export class JasmineRunner{
 		var deferred = Bluebird.defer();
 		var jasmine = new Jasmine();		
 		jasmine.loadConfig({
-			spec_dir: config.specDir || ".",
+			spec_dir: config.specDir,
     		spec_files: config.specs,
     		helpers: config.helpers
 		});
