@@ -1,23 +1,28 @@
-declare var require: any;
-
 import * as Bluebird from "bluebird";
-import {Config} from "../dharma";
 import * as fs from "fs";
 
-// import * as istanbul from "istanbul";
 var Istanbul: any = require("istanbul");
 
 export class IstanbulPreprocessor {
 	
-	public preprocess(config: Config): Promise<any>{
-		console.log("running preprocessor...");
+	private specFiles: string[];
+	private srcFiles: string[];
+	private verbose: boolean;
+	
+	constructor({specFiles, srcFiles = ["**/!(*.spec).js"], verbose = false}){
+		this.specFiles = specFiles;
+		this.srcFiles = srcFiles;
+		this.verbose = verbose;	
+	}
+	
+	public preprocess(): Promise<any>{		
 		var hook = Istanbul.hook;     		
 		var instrumenter = new Istanbul.Instrumenter({ /*coverageVariable: coverageVar , preserveComments: preserveComments*/});
         var transformer = instrumenter.instrumentSync.bind(instrumenter);
 		var matcherFor:Function = Bluebird.promisify(Istanbul.matcherFor);	
 		return matcherFor({
-			excludes: ["**/node_modules/**"].concat(config.specs),
-			includes: config.srcFiles			
+			excludes: ["**/node_modules/**"].concat(this.specFiles),
+			includes: this.srcFiles
 		}).then((matchFn: any) => {
 			global["__coverage__"] = [];			
 			matchFn.files.forEach(function (file) {             	
@@ -28,10 +33,9 @@ export class IstanbulPreprocessor {
 				Object.keys(instrumenter.coverState.s).forEach(function(key) {
 					instrumenter.coverState.s[key] = 0;
 				});
-
 				global["__coverage__"][file] = instrumenter.coverState;				
 			 });
-			hook.hookRequire(matchFn, transformer, {verbose: true});
+			hook.hookRequire(matchFn, transformer, {verbose: this.verbose});
 		});								
 	}		
 }

@@ -1,7 +1,10 @@
+/// <reference path="../typings/tsd.d.ts"/>
+
+import * as fs from "fs";
 import * as Bluebird from "bluebird";
 import {JasmineRunner} from "./frameworks/JasmineRunner"; 
 import {IstanbulPreprocessor} from "./preprocessors/IstanbulPreprocessor";
-import {IstanbulHtmlReporter} from "./reporters/IstanbulHtmlReporter";
+import {IstanbulReporter} from "./reporters/IstanbulReporter";
 import {IstanbulThresholdReporter} from "./reporters/IstanbulThresholdReporter";
 
 export class Config {
@@ -22,8 +25,9 @@ export class Config {
 
 export class Dharma {
 	
-	constructor(private config: Config){
-		
+	constructor(private configFile: string){
+		//TODO read configFile
+		// Bluebird.resolve(fs.readFileSync
 	}	
 	
 	public run(){
@@ -39,18 +43,18 @@ export class Dharma {
 	}
 	
 	private runPreprocessors(): Promise<any>{
-		var preprocessor = new IstanbulPreprocessor();
-		return preprocessor.preprocess(this.config);		
+		var preprocessor = new IstanbulPreprocessor(this.config);
+		return preprocessor.preprocess();		
 	}
 	
 	private runTests(): Promise<any>{		 
-		var runner = new JasmineRunner(); 
-		return runner.runTests(this.config);		
+		var runner = new JasmineRunner(this.config); 
+		return runner.runTests();		
 	}
 	
 	private runReporters(): Promise<any>{
-		var istanbulReporter = new IstanbulHtmlReporter();
-		var thresholdReporter = new IstanbulThresholdReporter();
-		return istanbulReporter.report(this.config).then(() => {return thresholdReporter.report(this.config)});		
+		var istanbulReporter = new IstanbulReporter(this.config);
+		var thresholdReporter = new IstanbulThresholdReporter(this.config);
+		return Bluebird.all([istanbulReporter.report(), thresholdReporter.report()]);		
 	}
 }

@@ -1,21 +1,20 @@
 import * as parseArgs from "minimist";
-import {Dharma, Config} from "./dharma";
+import {Dharma} from "./dharma";
 
 declare var process: any;
 
 export function run(){
 	var args: parseArgs.ParsedArgs = parseArgs(process.argv.slice(2));
 	var cmd: string = args._.shift();
-	if(args["specs"]){
-		args["specs"] = args["specs"].split(",");
+	var config: any = {};
+	for(var arg in args){
+		if(arg.indexOf(",") > -1){
+			args[arg] = args[arg].split(",");
+		}
+		if(arg !== "_"){
+			config[arg] = args[arg];
+		}
 	}
-	if(args["helpers"]){
-		args["helpers"] = args["helpers"].split(",");
-	}		
-	if(args["srcFiles"]){
-		args["srcFiles"] = args["srcFiles"].split(",");
-	}
-	var config = new Config(args);
 	console.log(config);		
 	var dharma = new Dharma(config);
 	switch(cmd){
