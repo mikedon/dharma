@@ -9,11 +9,11 @@ export class IstanbulThresholdReporter {
 	private lines: number;
 	private functions: number;
 	
-	constructor({statements = 80, branches = 80, lines = 80, functions = 80}){
-		this.statements = statements;
-		this.branches = branches;
-		this.lines = lines;
-		this.functions = functions;	
+	constructor({istanbulThresholdReporter = {statements : 80, branches : 80, lines : 80, functions : 80}}){
+		this.statements = istanbulThresholdReporter.statements;
+		this.branches = istanbulThresholdReporter.branches;
+		this.lines = istanbulThresholdReporter.lines;
+		this.functions = istanbulThresholdReporter.functions;			
 	}
 	
 	public report(): Promise<any> {		
@@ -35,10 +35,11 @@ export class IstanbulThresholdReporter {
 			"branches",
 			"lines",
 			"functions"
-		].forEach(function (key) {						
+		].forEach(function (key) {									
 			var actual = globalResults[key].pct;
 			var actualUncovered = globalResults[key].total - globalResults[key].covered;
-			var threshold = thresholds[key];			
+			var threshold = thresholds[key];
+			console.log(`actual: ${actual} and threshold: ${threshold} and actualUncovered: ${actualUncovered}`);			
 			if (actual < threshold) {
 				console.log(`coverage threshold not reached for ${key}`);
 				failed = true;

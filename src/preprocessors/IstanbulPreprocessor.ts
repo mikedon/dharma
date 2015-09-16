@@ -9,10 +9,10 @@ export class IstanbulPreprocessor {
 	private srcFiles: string[];
 	private verbose: boolean;
 	
-	constructor({specFiles, srcFiles = ["**/!(*.spec).js"], verbose = false}){
+	constructor({specFiles, srcFiles = ["**/!(*.spec).js"], istanbulPreprocessor = {verbose: false}}){
 		this.specFiles = specFiles;
 		this.srcFiles = srcFiles;
-		this.verbose = verbose;	
+		this.verbose = istanbulPreprocessor.verbose;	
 	}
 	
 	public preprocess(): Promise<any>{		

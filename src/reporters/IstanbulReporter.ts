@@ -7,9 +7,9 @@ export class IstanbulReporter {
 	private outputDir: string;
 	private reporters: string[];
 	
-	constructor({outputDir = "./build", reporters = ["html"]}) {
-		this.outputDir = outputDir;
-		this.reporters = reporters;		
+	constructor({istanbulReporter = {outputDir: "./build", reporters: ["html"]}}) {
+		this.outputDir = istanbulReporter.outputDir;
+		this.reporters = istanbulReporter.reporters;		
 	}
 	
 	public report(): Promise<any>{
