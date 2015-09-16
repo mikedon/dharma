@@ -30,8 +30,7 @@ export class Dharma {
 	
 	constructor(private configFile: string){
 		var root = this.findRoot(process.cwd());		
-		this.config = require(`${root}/${configFile}`);
-		console.log(this.config);		
+		this.config = require(`${root}/${configFile}`);				
 	}	
 	
 	public run(){
@@ -41,7 +40,7 @@ export class Dharma {
 		})
 		.then(()=>{
 			this.runReporters().catch((err) => {
-				throw "fail";
+				throw err;
 			});
 		});
 	}

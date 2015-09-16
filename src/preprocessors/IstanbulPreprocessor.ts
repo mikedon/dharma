@@ -12,14 +12,15 @@ export class IstanbulPreprocessor {
 	constructor({specFiles, srcFiles = ["**/!(*.spec).js"], istanbulPreprocessor = {verbose: false}}){
 		this.specFiles = specFiles;
 		this.srcFiles = srcFiles;
-		this.verbose = istanbulPreprocessor.verbose;	
+		this.verbose = istanbulPreprocessor.verbose;			
 	}
 	
 	public preprocess(): Promise<any>{		
 		var hook = Istanbul.hook;     		
 		var instrumenter = new Istanbul.Instrumenter({ /*coverageVariable: coverageVar , preserveComments: preserveComments*/});
         var transformer = instrumenter.instrumentSync.bind(instrumenter);
-		var matcherFor:Function = Bluebird.promisify(Istanbul.matcherFor);	
+		var matcherFor:Function = Bluebird.promisify(Istanbul.matcherFor);
+			
 		return matcherFor({
 			excludes: ["**/node_modules/**"].concat(this.specFiles),
 			includes: this.srcFiles

@@ -29,6 +29,7 @@ export class IstanbulThresholdReporter {
 			functions: this.functions
 		};
 		var failed = false;
+		console.log(`==================== Coverage / Threshold summary =============================`);
 		var globalResults = utils.summarizeCoverage(collector.getFinalCoverage());
 		[
 			"statements",
@@ -38,15 +39,16 @@ export class IstanbulThresholdReporter {
 		].forEach(function (key) {									
 			var actual = globalResults[key].pct;
 			var actualUncovered = globalResults[key].total - globalResults[key].covered;
-			var threshold = thresholds[key];
-			console.log(`actual: ${actual} and threshold: ${threshold} and actualUncovered: ${actualUncovered}`);			
-			if (actual < threshold) {
-				console.log(`coverage threshold not reached for ${key}`);
+			var threshold = thresholds[key];						
+			if (actual < threshold) {				
 				failed = true;
 			}
-		});		
+			console.log(`${key}  : ${actual}% ( ${globalResults[key].covered}/${globalResults[key].total} ) : Threshold : ${threshold}%`);
+		});
+		console.log(`================================================================================`);
+		
 		if(failed){
-			return Bluebird.reject(failed);
+			return Bluebird.reject("Code coverage threshold not reached.  See report for more details.");
 		}else{
 			return Bluebird.resolve();	
 		}		

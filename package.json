@@ -18,6 +18,7 @@
     "glob": "^5.0.14",
     "istanbul": "^0.3.19",
     "jasmine": "^2.3.2",
+    "jasmine-reporters": "^2.0.7",
     "minimist": "^1.2.0"
   }
 }

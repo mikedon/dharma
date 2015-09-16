@@ -1,7 +1,7 @@
 module.exports = {
-	specDir: "src",
-	specfiles: ["**/*.spec.js"],
-	srcFiles: ["**/!(*.spec).js"],
+	specDir: "examples/jasmine/src",
+	specFiles: ["examples/jasmine/src/**/*.spec.js"],
+	srcFiles: ["examples/jasmine/src/**/!(*.spec).js"],
 	
 	framework: "JasmineRunner",
 	
@@ -10,11 +10,26 @@ module.exports = {
 	reporters: ["IstanbulReporter", "IstanbulThresholdReporter"],
 	
 	jasmineRunner: {
-		helpers: []	
+		helpers: [],				
+		reporters: [
+			{
+				name: "JUnitXmlReporter",
+				config: {
+					savePath: "build/tmp",
+					filePrefix: "",
+					consolidateAll: true
+				}	
+			},{
+				name: "TapReporter",
+				config: {
+					
+				}
+			}
+		]	
 	},
 	
 	istanbulPreprocessor : {
-		verbose: true	
+		verbose: false	
 	},
 	
 	istanbulThresholdReporter: {
