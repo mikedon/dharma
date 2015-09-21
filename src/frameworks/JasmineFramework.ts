@@ -3,7 +3,7 @@ import * as Bluebird from "bluebird";
 var Jasmine: any = require("jasmine");
 var jasmineReporters: any = require("jasmine-reporters"); 
 
-export class JasmineRunner{		
+export class JasmineFramework{		
 	
 	private specDir: string;
 	private specFiles: string[];
@@ -21,7 +21,7 @@ export class JasmineRunner{
 	
 	public runTests(): Promise<any>{		
 		var deferred = Bluebird.defer();
-		var jasmine = new Jasmine();		
+		var jasmine = new Jasmine();			
 		jasmine.loadConfig({
 			spec_dir: this.specDir,
     		spec_files: this.specFiles,

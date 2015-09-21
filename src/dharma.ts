@@ -3,10 +3,9 @@
 import * as fs from "fs";
 import * as Bluebird from "bluebird";
 import * as path from "path";
-import {JasmineRunner} from "./frameworks/JasmineRunner"; 
-import {IstanbulPreprocessor} from "./preprocessors/IstanbulPreprocessor";
-import {IstanbulReporter} from "./reporters/IstanbulReporter";
-import {IstanbulThresholdReporter} from "./reporters/IstanbulThresholdReporter";
+import {DharmaPreprocessor} from "preprocessors/DharmaPreprocessor";
+import {DharmaFramework} from "frameworks/DharmaFramework";
+import {DharmaReporter} from "reporters/DharmaReporter";
 
 export class Config {
 	specs: string[];
@@ -14,19 +13,25 @@ export class Config {
 	specDir: string;
 	srcFiles: string[];	
 	outputDir: string;
+	framework: string;
+	preprocessors: string[];
+	reporters: string[];
 	
-	constructor({specs = ["**/*.spec.js"], helpers = [], specDir = ".", srcFiles = [], outputDir = "./build"}){
+	constructor({specs = ["**/*.spec.js"], helpers = [], specDir = ".", srcFiles = [], outputDir = "./build", framework, preprocessors, reporters}){
 		this.specs = specs;
 		this.helpers = helpers;
 		this.specDir = specDir;
 		this.srcFiles = srcFiles;
 		this.outputDir = outputDir;
+		this.framework = framework;
+		this.preprocessors = preprocessors
+		this.reporters = reporters;
 	}	
 }
 
 export class Dharma {
 	
-	private config: any;
+	private config: Config;
 	
 	constructor(private configFile: string){
 		var root = this.findRoot(process.cwd());		
@@ -45,20 +50,43 @@ export class Dharma {
 		});
 	}
 	
-	private runPreprocessors(): Promise<any>{
-		var preprocessor = new IstanbulPreprocessor(this.config);
-		return preprocessor.preprocess();		
+	private runPreprocessors(): Promise<any>{		
+		var promises: Promise<any>[] = [];
+		for(var preprocessor of this.config.preprocessors){
+			var preprocessorModule: any;
+			try{
+				preprocessorModule= require(preprocessor);	
+			}catch(err){
+				preprocessorModule = require(`./preprocessors/${preprocessor}`)
+			}								
+			promises.push(new preprocessorModule[preprocessor](this.config).preprocess());												
+		}						
+		return Bluebird.all(promises);
 	}
 	
-	private runTests(): Promise<any>{		 
-		var runner = new JasmineRunner(this.config); 
-		return runner.runTests();		
+	private runTests(): Promise<any>{
+		var frameworkModule: any;
+		try{
+			frameworkModule = require(this.config.framework);	
+		}catch(err){
+			frameworkModule = require(`./frameworks/${this.config.framework}`);
+		}				 
+		return new frameworkModule[this.config.framework](this.config).runTests();				
 	}
 	
 	private runReporters(): Promise<any>{
-		var istanbulReporter = new IstanbulReporter(this.config);
-		var thresholdReporter = new IstanbulThresholdReporter(this.config);
-		return Bluebird.all([istanbulReporter.report(), thresholdReporter.report()]);		
+		var promises: Promise<any>[] = [];
+		for(var reporter of this.config.reporters){
+			
+			var reporterModule: any;
+			try{
+				reporterModule = require(reporter);
+			}catch(err){
+				reporterModule = require(`./reporters/${reporter}`);
+			}
+			promises.push(new reporterModule[reporter](this.config).report()); 
+		} 
+		return Bluebird.all(promises);				
 	}
 	
 	private findRoot(dir: string){

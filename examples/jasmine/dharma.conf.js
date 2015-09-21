@@ -1,11 +1,11 @@
 module.exports = {
 	specDir: "examples/jasmine/src",
-	specFiles: ["examples/jasmine/src/**/*.spec.js"],
+	specFiles: ["**/*.spec.js"],
 	srcFiles: ["examples/jasmine/src/**/!(*.spec).js"],
 	
-	framework: "JasmineRunner",
+	framework: "JasmineFramework",
 	
-	preprocessors: ["IstanbulPreprocesor"],
+	preprocessors: ["IstanbulPreprocessor"],
 	
 	reporters: ["IstanbulReporter", "IstanbulThresholdReporter"],
 	
