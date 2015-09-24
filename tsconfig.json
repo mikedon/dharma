@@ -4,11 +4,17 @@
         "noImplicitAny": false,
         "removeComments": true,
         "preserveConstEnums": true,        
-        "sourceMap": true,
+        "sourceMap": true,        
+        "declaration": true,
         "outDir": "build"
-    },
-	"exclude": [
-		"node_modules",
-		"typings"
-	]
+    },	
+    "files": [
+        "typings/tsd.d.ts",
+        "src/dharma.ts",
+        "src/frameworks/JasmineFramework.ts",
+        "src/preprocessors/IstanbulPreprocessor.ts",
+        "src/reporters/IstanbulReporter.ts",
+        "src/reporters/IstanbulThresholdReporter.ts",
+        "src/cli.ts"
+    ]    
 }

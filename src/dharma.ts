@@ -1,11 +1,9 @@
-/// <reference path="../typings/tsd.d.ts"/>
-
 import * as fs from "fs";
 import * as Bluebird from "bluebird";
 import * as path from "path";
-import {DharmaPreprocessor} from "preprocessors/DharmaPreprocessor";
-import {DharmaFramework} from "frameworks/DharmaFramework";
-import {DharmaReporter} from "reporters/DharmaReporter";
+import {DharmaPreprocessor} from "./preprocessors/DharmaPreprocessor";
+import {DharmaFramework} from "./frameworks/DharmaFramework";
+import {DharmaReporter} from "./reporters/DharmaReporter";
 
 export class Config {
 	specs: string[];
@@ -38,15 +36,15 @@ export class Dharma {
 		this.config = require(`${root}/${configFile}`);				
 	}	
 	
-	public run(){
-		this.runPreprocessors()
+	public run(): Promise<any>{
+		return this.runPreprocessors()
 		.then(()=>{
-			this.runTests();
+			return this.runTests();
 		})
 		.then(()=>{
-			this.runReporters().catch((err) => {
-				throw err;
-			});
+			return this.runReporters();							
+		}).catch((err) => {
+			throw err;
 		});
 	}
 	

@@ -2,7 +2,7 @@
   "name": "dharma",
   "version": "0.0.1",
   "description": "Node Test Runner",
-  "main": "index.js",
+  "main": "build/dharma.js",
   "scripts": {
     "clean": "rm -rf build && rm -rf dist",
     "tsc": "tsc",
@@ -20,5 +20,9 @@
     "jasmine": "^2.3.2",
     "jasmine-reporters": "^2.0.7",
     "minimist": "^1.2.0"
-  }
+  },
+  "typescript": {
+    "definition": "build/dharma.d.ts"
+  },
+   "typings": "build/dharma.d.ts"
 }

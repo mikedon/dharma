@@ -11,12 +11,12 @@ export class JasmineFramework{
 	private showColors: boolean;
 	private reporters: {name: string; config: any}[];
 	
-	constructor({specDir = ".", specFiles = ["**/*.spec.js"], jasmineRunner = {helpers: [], showColors: true, reporters: [], outputDir: "tmp/"}}){
+	constructor({specDir = ".", specFiles = ["**/*.spec.js"], jasmineFramework = {helpers: [], showColors: true, reporters: [], outputDir: "tmp/"}}){
 		this.specDir = specDir;
 		this.specFiles = specFiles;
-		this.helpers = jasmineRunner.helpers;
-		this.showColors = jasmineRunner.showColors;
-		this.reporters = jasmineRunner.reporters;			
+		this.helpers = jasmineFramework.helpers;
+		this.showColors = jasmineFramework.showColors;
+		this.reporters = jasmineFramework.reporters;			
 	}
 	
 	public runTests(): Promise<any>{		
@@ -28,7 +28,11 @@ export class JasmineFramework{
     		helpers: this.helpers
 		});
 		jasmine.onComplete((passed: boolean) => {
-			deferred.resolve();			
+			if(passed){
+				deferred.resolve();
+			}else{
+				deferred.reject("Test Failures");
+			}			
 		});
 		
 		jasmine.configureDefaultReporter({    		    		
