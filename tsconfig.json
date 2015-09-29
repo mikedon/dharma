@@ -17,6 +17,7 @@
         "src/reporters/IstanbulThresholdReporter.ts",
         "src/cli.ts",
         
-        "src/frameworks/JasmineFramework.spec.ts"
+        "src/frameworks/JasmineFramework.spec.ts",
+        "src/preprocessors/IstanbulPreprocessor.spec.ts"        
     ]    
 }

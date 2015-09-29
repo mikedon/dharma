@@ -24,12 +24,12 @@ module.exports = {
 	/**
 	 * An array of preprocessor to activate.  Preprocessors run before the tests are run 
 	 */
-	preprocessors: [/*"IstanbulPreprocessor"*/],
+	preprocessors: ["IstanbulPreprocessor"],
 	
 	/**
 	 * An array of reporters to activate.  Reporters run after the tests are executed.
 	 */
-	reporters: [/*"IstanbulReporter", "IstanbulThresholdReporter"*/],
+	reporters: ["IstanbulReporter", "IstanbulThresholdReporter"],
 	
 	/**
 	 * Indivisual plugins define their own configuration like this.  The convention is for the plugin to expect

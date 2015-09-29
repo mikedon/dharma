@@ -9,10 +9,10 @@ export class IstanbulPreprocessor {
 	private srcFiles: string[];
 	private verbose: boolean;
 	
-	constructor({specFiles, srcFiles = ["**/!(*.spec).js"], istanbulPreprocessor = {verbose: false}}){
+	constructor({specFiles = ["**/*.spec.js"], srcFiles = ["**/!(*.spec).js"], istanbulPreprocessor = {verbose: false}}){
 		this.specFiles = specFiles;
 		this.srcFiles = srcFiles;
-		this.verbose = istanbulPreprocessor.verbose;			
+		this.verbose = istanbulPreprocessor.verbose;
 	}
 	
 	public preprocess(): Promise<any>{		
@@ -25,15 +25,19 @@ export class IstanbulPreprocessor {
 			excludes: ["**/node_modules/**"].concat(this.specFiles),
 			includes: this.srcFiles
 		}).then((matchFn: any) => {
-			global["__coverage__"] = [];			
-			matchFn.files.forEach(function (file) {             	
+			if(!global["__coverage__"]){			
+				global["__coverage__"] = [];
+			}			
+			matchFn.files.forEach(function (file) {    				         	
 				transformer(fs.readFileSync(file, 'utf-8'), file);
 				// When instrumenting the code, istanbul will give each FunctionDeclaration a value of 1 in coverState.s,
 				// presumably to compensate for function hoisting. We need to reset this, as the function was not hoisted,
 				// as it was never loaded.
-				Object.keys(instrumenter.coverState.s).forEach(function(key) {
+								
+				Object.keys(instrumenter.coverState.s).forEach(function(key) {										
 					instrumenter.coverState.s[key] = 0;
 				});
+				
 				global["__coverage__"][file] = instrumenter.coverState;				
 			 });
 			hook.hookRequire(matchFn, transformer, {verbose: this.verbose});
