@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rm -rf build && rm -rf dist",
     "tsc": "tsc",
-    "build": "npm run clean && npm run tsc"
+    "build": "npm run clean && npm run tsc",
+    "test": "npm run build && npm link && dharma run --configFile=dharma.conf.js"
   },
   "author": "Mike Donovan",
   "license": "MIT",
@@ -24,5 +25,8 @@
   "typescript": {
     "definition": "build/dharma.d.ts"
   },
-   "typings": "build/dharma.d.ts"
+  "typings": "build/dharma.d.ts",
+  "devDependencies": {
+    "proxyquire": "^1.7.2"
+  }
 }

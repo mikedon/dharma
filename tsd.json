@@ -9,7 +9,7 @@
       "commit": "82e6efc02a646c61406e5426a240a9a566e58a15"
     },
     "jasmine/jasmine.d.ts": {
-      "commit": "a278148f0ec80f2aa9a2ec22f5089308f74dda47"
+      "commit": "b937e64fc9245d299fa4ba26c6eddbeaed42a920"
     },
     "node/node.d.ts": {
       "commit": "af76bf46025371c760d8fe8c03cf874428da6124"
@@ -22,6 +22,9 @@
     },
     "bluebird/bluebird.d.ts": {
       "commit": "b3aeee64552e324581fdbe0926f4a96e981e451b"
+    },
+    "proxyquire/proxyquire.d.ts": {
+      "commit": "b937e64fc9245d299fa4ba26c6eddbeaed42a920"
     }
   }
 }

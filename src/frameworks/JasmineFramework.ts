@@ -20,7 +20,7 @@ export class JasmineFramework{
 	}
 	
 	public runTests(): Promise<any>{		
-		var deferred = Bluebird.defer();
+		var deferred = Bluebird.defer();		
 		var jasmine = new Jasmine();			
 		jasmine.loadConfig({
 			spec_dir: this.specDir,

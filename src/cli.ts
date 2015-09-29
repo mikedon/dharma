@@ -8,8 +8,14 @@ export function run(){
 	var cmd: string = args._.shift();	
 	var dharma = new Dharma(args["configFile"]);
 	switch(cmd){
-		case "run":
-			dharma.run();			
+		case "run":			
+			dharma.run().then(()=>{
+				console.log("Dharma execution completed succesfully");
+				process.exit(0);
+			}).catch((err) => {
+				console.error(err);
+				process.exit(1);
+			});			
 			break;		
 		case "help":
 			console.log("HELP ME");
