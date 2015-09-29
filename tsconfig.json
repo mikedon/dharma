@@ -18,6 +18,8 @@
         "src/cli.ts",
         
         "src/frameworks/JasmineFramework.spec.ts",
-        "src/preprocessors/IstanbulPreprocessor.spec.ts"        
+        "src/preprocessors/IstanbulPreprocessor.spec.ts",
+        "src/reporters/IstanbulReporter.spec.ts",
+        "src/reporters/IstanbulThresholdReporter.spec.ts"        
     ]    
 }
