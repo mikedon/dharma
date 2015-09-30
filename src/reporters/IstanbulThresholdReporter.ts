@@ -16,12 +16,7 @@ export class IstanbulThresholdReporter {
 		this.functions = istanbulThresholdReporter.functions;			
 	}
 	
-	public report(): Promise<any> {		
-		var utils = Istanbul.utils;
-		var coverage = global["__coverage__"];		
-		var collector = new Istanbul.Collector();
-		collector.add(coverage);
-		
+	public report(): Promise<any> {								
 		var thresholds: any = {
 			statements: this.statements,
 			branches: this.branches,
@@ -30,7 +25,7 @@ export class IstanbulThresholdReporter {
 		};
 		var failed = false;
 		console.log(`==================== Coverage / Threshold summary =============================`);
-		var globalResults = utils.summarizeCoverage(collector.getFinalCoverage());
+		var globalResults = this.getGlobalResults();
 		[
 			"statements",
 			"branches",
@@ -52,5 +47,14 @@ export class IstanbulThresholdReporter {
 		}else{
 			return Bluebird.resolve();	
 		}		
+	}
+	
+	//refactored into separate method for unit tests
+	private getGlobalResults(){
+		var utils = Istanbul.utils;
+		var coverage = global["__coverage__"];		
+		var collector = new Istanbul.Collector();
+		collector.add(coverage);
+		return utils.summarizeCoverage(collector.getFinalCoverage());	
 	}
 }
