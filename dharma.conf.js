@@ -61,7 +61,7 @@ module.exports = {
 	
 	istanbulThresholdReporter: {
 		statements: 80,
-		branches: 80,
+		branches: 50,
 		lines: 80,
 		functions: 80
 	},
