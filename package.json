@@ -2,6 +2,10 @@
   "name": "dharma",
   "version": "0.0.1",
   "description": "Node Test Runner",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikedon/dharma"
+  },
   "main": "build/dharma.js",
   "scripts": {
     "clean": "rm -rf build && rm -rf dist",

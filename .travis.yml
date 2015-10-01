@@ -2,3 +2,6 @@ language: node_js
 node_js:
   - "4.1"
   - "0.12"
+notifications:
+  email:
+    - mikedonovan1987@gmail.com
