@@ -1,6 +1,6 @@
 {
   "name": "dharma-nodejs",
-  "version": "0.0.1",
+  "version": "0.0.2-1",
   "description": "Node Test Runner",
   "repository": {
     "type": "git",
@@ -15,6 +15,10 @@
   },
   "author": "Mike Donovan",
   "license": "MIT",
+  "files": [
+    "bin/",
+    "build/"
+  ],
   "bin": {
     "dharma": "./bin/dharma"
   },
