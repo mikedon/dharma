@@ -1,7 +1,7 @@
 # Dharma
 A tool for NodeJS projects to help run tests, generate code coverage, and anything else to help the testing process.
 
-Dharma is heavily inspired by (Kharma)[https://github.com/karma-runner/karma].
+Dharma is heavily inspired by [Kharma](https://github.com/karma-runner/karma).
 
 ### Motivation
 Coming from the browser world there is a clear path to running the tests, generating code coverage, and various other testing related activities with tools like
