@@ -33,7 +33,7 @@ export class Dharma {
 	
 	constructor(private configFile: string){
 		var root = this.findRoot(process.cwd());		
-		this.config = require(`${root}/${configFile}`);				
+		this.config = this.loadModule(`${root}/${configFile}`);				
 	}	
 	
 	public run(): Promise<any>{
@@ -53,9 +53,9 @@ export class Dharma {
 		for(var preprocessor of this.config.preprocessors){
 			var preprocessorModule: any;
 			try{
-				preprocessorModule= require(preprocessor);	
+				preprocessorModule = this.loadModule(preprocessor);	
 			}catch(err){
-				preprocessorModule = require(`./preprocessors/${preprocessor}`)
+				preprocessorModule = this.loadModule(`./preprocessors/${preprocessor}`)
 			}								
 			promises.push(new preprocessorModule[preprocessor](this.config).preprocess());												
 		}						
@@ -65,9 +65,9 @@ export class Dharma {
 	private runTests(): Promise<any>{
 		var frameworkModule: any;
 		try{
-			frameworkModule = require(this.config.framework);	
+			frameworkModule = this.loadModule(this.config.framework);	
 		}catch(err){
-			frameworkModule = require(`./frameworks/${this.config.framework}`);
+			frameworkModule = this.loadModule(`./frameworks/${this.config.framework}`);
 		}				 
 		return new frameworkModule[this.config.framework](this.config).runTests();				
 	}
@@ -78,9 +78,9 @@ export class Dharma {
 			
 			var reporterModule: any;
 			try{
-				reporterModule = require(reporter);
+				reporterModule = this.loadModule(reporter);
 			}catch(err){
-				reporterModule = require(`./reporters/${reporter}`);
+				reporterModule = this.loadModule(`./reporters/${reporter}`);
 			}
 			promises.push(new reporterModule[reporter](this.config).report()); 
 		} 
@@ -95,5 +95,9 @@ export class Dharma {
 			tokens.pop();			
 			return this.findRoot(tokens.join(path.sep));
 		}		
+	}
+	
+	private loadModule(module: string): any{
+		return require(module);
 	}
 }
