@@ -1,4 +1,6 @@
 # Dharma
+![TravisCI](https://travis-ci.org/mikedon/dharma.svg?branch=master)
+
 A tool for NodeJS projects to help run tests, generate code coverage, and anything else to help the testing process.
 
 Dharma is heavily inspired by [Kharma](https://github.com/karma-runner/karma).
