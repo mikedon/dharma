@@ -1,6 +1,6 @@
 {
-  "name": "dharma-nodejs",
-  "version": "0.0.2-1",
+  "name": "dharma",
+  "version": "0.0.1",
   "description": "Node Test Runner",
   "repository": {
     "type": "git",
