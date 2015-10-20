@@ -31,9 +31,6 @@
     "minimist": "^1.2.0",
     "typescript": "^1.6.2"
   },
-  "typescript": {
-    "definition": "build/dharma.d.ts"
-  },
   "typings": "build/dharma.d.ts",
   "devDependencies": {
     "proxyquire": "^1.7.2"
