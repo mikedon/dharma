@@ -5,7 +5,7 @@ var IstanbulMock = {
 
 var fsMock = {
 	readFileSync: function(){
-		
+		return "var __extends = 'something'\nexport {};";
 	}
 }
 
@@ -55,5 +55,34 @@ describe("Istanbul Preprocessor Plugin", function(){
 		expect(global["__coverage__"]["file1.txt"]).toBeDefined();
 		expect(global["__coverage__"]["file1.txt"].s.statements).toBe(0);		
 		delete global["__coverage__"]["file1.txt"];  // Don't forget to remove anything the test adds to the global scope!			
+	});
+	
+	it("should ignore Typescript Helper Functions", function(){
+		let istanbulPreprocessor = new IstanbulPreprocessor.IstanbulPreprocessor({});
+		spyOn(IstanbulMock["hook"], "hookRequire").and.callFake(function(){				
+		});			
+		let transformedContents;
+		let instrumenterMock = {
+			instrumentSync: function(contents){
+				
+				transformedContents = contents;					
+			},
+			coverState: {
+				s: {
+					"statements": -1
+				}
+			}
+		}
+		spyOn(IstanbulMock, "Instrumenter").and.returnValue(instrumenterMock);
+		spyOn(IstanbulMock, "matcherFor").and.returnValue({
+			then: function(callback){					
+				callback({
+					files: ["file1.txt"] //TODO add a fake file here	
+				});
+			}
+		});
+		istanbulPreprocessor.preprocess();
+		expect(transformedContents).toBe("/* istanbul ignore next */\nvar __extends = 'something'\nexport {};");		
+		delete global["__coverage__"]["file1.txt"];  // Don't forget to remove anything the test adds to the global scope!
 	});
 });
