@@ -37,7 +37,6 @@ export class IstanbulPreprocessor {
 					let linesOfCode = fileContents.split("\n");					
 					for(let i = 0; i < linesOfCode.length; i++){	
 						if(tsHelperRegex.test(linesOfCode[i])){
-							console.log("adding istanbul ignore");
 							linesOfCode.splice(i, 0, "/* istanbul ignore next */");
 							i++;
 						}						
